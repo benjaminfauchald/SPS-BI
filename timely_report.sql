@@ -46,9 +46,9 @@ select
 
 
 
+
 from
     sps-business-insight.sps_raw_harvest.users u
 where
     u.is_active = true
-order by
-    u.id
+
