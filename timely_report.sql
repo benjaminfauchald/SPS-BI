@@ -37,12 +37,12 @@ select
 
 
             -- Total timely logged hours
-        (select sum(hours) from sps-business-insight.sps_raw_harvest.time_entries te
+        COALESCE((select sum(hours) from sps-business-insight.sps_raw_harvest.time_entries te
         where
             user_id=u.id
             and CAST(FORMAT_DATETIME('%F', te.spent_date) as STRING) = CAST(DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) as STRING)
             and CAST(FORMAT_DATETIME('%F', te.spent_date) as STRING) =CAST(FORMAT_DATETIME('%F', te.created_at) as STRING)
-        ) as timely_logged
+        ),0) as timely_logged
 
 
 
