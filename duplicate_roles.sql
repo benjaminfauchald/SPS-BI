@@ -1,25 +1,40 @@
-select
-        (select CONCAT(first_name, ' ', last_name) from sps_raw_harvest.users u where u.id = ur.user_id) as user_name,
-        (select email from sps_raw_harvest.users u where u.id = ur.user_id) as email,
-        r.name as role_name,
-        r.id as role_id
-from
-        sps-business-insight.sps_raw_harvest.user_roles ur,
-        sps-business-insight.sps_raw_harvest.roles r
-where
-        r.id = ur.role_id
-        and ur.role_id <> 612789 --All billable resources
-        and ur.role_id <> 754039 --Team - Apphuset
-        and ur.role_id <> 903545 --903545,Seven Peaks
-        and ur.role_id <> 880331 --Morphosis
-        and (select is_active from sps_raw_harvest.users u where u.id = ur.user_id) = true
+CREATE OR REPLACE PROCEDURE sps.duplicate_roles(test STRING)
+    --OPTIONS(strict_mode=FALSE)
+    BEGIN
+        select
+                (select CONCAT(first_name, ' ', last_name) from sps-business-insight.harvest.users u where u.id = ur.user_id) as user_name,
+                (select email from sps-business-insight.harvest.users u where u.id = ur.user_id) as email,
+                r.name as role_name,
+                r.id as role_id,
+                ur.user_id as user_id
+        from
+                sps-business-insight.harvest.user_roles ur,
+                sps-business-insight.harvest.roles r
+        where
+                r.id = ur.role_id
+                and ur.role_id <> 612789 --All billable resources
+                and ur.role_id <> 754039 --Team - Apphuset
+                and ur.role_id <> 903545 --903545,Seven Peaks
+                and ur.role_id <> 880331 --Morphosis
+                and (select is_active from sps-business-insight.harvest.users u where u.id = ur.user_id) = true
 
-order by
-            (select CONCAT(first_name, ' ', last_name) from sps_raw_harvest.users u where u.id = ur.user_id)
+        order by
+                    (select CONCAT(first_name, ' ', last_name) from sps-business-insight.harvest.users u where u.id = ur.user_id);
+    END
 
+call sps-business-insight.sps.duplicate_roles
 /*
 
+select ''
 
+CREATE OR REPLACE PROCEDURE mydataset.create_customer(name STRING)
+BEGIN
+DECLARE id STRING;
+SET id = GENERATE_UUID();
+INSERT INTO mydataset.customers (customer_id, name)
+  VALUES(id, name);
+SELECT FORMAT("Created customer %s (%s)", id, name);
+END
 select * from   sps-business-insight.sps_raw_harvest.user_roles limit 10
 select * from   sps-business-insight.sps_raw_harvest.roles limit 10
 
