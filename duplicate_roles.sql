@@ -1,6 +1,6 @@
-CREATE OR REPLACE PROCEDURE sps.duplicate_roles(test STRING)
+--CREATE OR REPLACE PROCEDURE sps.duplicate_roles(test STRING)
     --OPTIONS(strict_mode=FALSE)
-    BEGIN
+--    BEGIN
         select
                 (select CONCAT(first_name, ' ', last_name) from sps-business-insight.harvest.users u where u.id = ur.user_id) as user_name,
                 (select email from sps-business-insight.harvest.users u where u.id = ur.user_id) as email,
@@ -16,13 +16,30 @@ CREATE OR REPLACE PROCEDURE sps.duplicate_roles(test STRING)
                 and ur.role_id <> 754039 --Team - Apphuset
                 and ur.role_id <> 903545 --903545,Seven Peaks
                 and ur.role_id <> 880331 --Morphosis
+
+
+                and
+               (
+               ur.role_id = 475492 -- Eng Backend Team
+                or id = 882456 -- ENG Cloud Team
+                or id = 924293 -- Eng Delivery Team
+                or id = 908890 -- Eng Management Team
+                or id = 241695 -- Eng Mobile Team
+                or id = 262970 -- Eng QA Team
+                or id = 327255 -- Eng Web Team
+                or id = 908401 -- Head
+                or id = 535066  --"OP - Marketing team"
+                or id = 911980 --"Senior"
+                or id = 912045 -- "UI Design"
+              )
+
                 and (select is_active from sps-business-insight.harvest.users u where u.id = ur.user_id) = true
 
         order by
                     (select CONCAT(first_name, ' ', last_name) from sps-business-insight.harvest.users u where u.id = ur.user_id);
-    END
+    --END
 
-call sps-business-insight.sps.duplicate_roles
+--call sps-business-insight.sps.duplicate_roles
 /*
 
 select ''

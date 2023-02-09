@@ -36,9 +36,9 @@ SELECT
             where
             (
             id =475492 -- Eng Backend Team
-            --or id = 882456 -- ENG Cloud Team
-            --or id = 924293 -- Eng Delivery Team
-            --or id = 908890 -- Eng Management Team
+            or id = 882456 -- ENG Cloud Team
+            or id = 924293 -- Eng Delivery Team
+            or id = 908890 -- Eng Management Team
             --or id = 241695 -- Eng Mobile Team
             --or id = 262970 -- Eng QA Team
             --or id = 327255 -- Eng Web Team
