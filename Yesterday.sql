@@ -1,5 +1,3 @@
-  SELECT `id` AS `id`, `spent_date` AS `spent_date`, `hours` AS `hours`, `Name` AS `Name`, `email` AS `email`, `Team` AS `Team`, `BU` AS `BU`
-  FROM (
 SELECT
   id,
     CURRENT_DATE() as spent_date,
@@ -12,19 +10,22 @@ SELECT
        ),0) as hours,
     CONCAT(u.first_name, ' ', u.last_name) as Name,
     u.email as email,
-   (
+    (select is_contractor from sps-business-insight.sps_raw_harvest.users where id = u.id) as contractor,
+   ( select 'N/A'
+            /*
             select
                 CASE
-                    WHEN r.id = 475492 THEN "Eng Backend Team"
-                    WHEN r.id = 82456 THEN "ENG Cloud Team"
-                    WHEN r.id = 924293 THEN "Eng Delivery Team"
-                    WHEN r.id = 908890 THEN "Eng Management Team"
-                    WHEN r.id = 241695 THEN "Eng Mobile Team"
-                    WHEN r.id = 262970 THEN "Eng QA Team"
-                    WHEN r.id =  327255 THEN "Eng Web Team"
-                    WHEN r.id =  535066 THEN "OP - Marketing team"
-                    WHEN r.id =  911980 THEN "Senior"
-                    WHEN r.id =  912045 THEN "UI Design"
+                    WHEN r.id = 754039 THEN "Team - Apphuset"
+                    WHEN r.id = 287358 THEN "Team - Delivery"
+                    WHEN r.id = 284579 THEN "Team - Design"
+                    WHEN r.id = 475492 THEN "Team - Eng - Backend"
+                    WHEN r.id = 882456 THEN "Team - Eng - Cloud"
+                    WHEN r.id = 241695 THEN "Team - Eng - Mobile"
+                    WHEN r.id = 262970 THEN "Team - Eng - QA"
+                    WHEN r.id = 327255 THEN "Team - Eng - Web"
+                    WHEN r.id = 535066 THEN "Team - Marketing"
+                    WHEN r.id = 934745 THEN "eam - Marketing Ext"
+                    WHEN r.id = 876423 THEN "Team - Product"
                 END
             from sps-business-insight.sps_raw_harvest.user_roles ur, sps-business-insight.sps_raw_harvest.roles r where ur.role_id = r.id and user_id=u.id and role_id in (
 
@@ -35,38 +36,48 @@ SELECT
                 sps-business-insight.sps_raw_harvest.roles
             where
             (
-            id =475492 -- Eng Backend Team
-            or id = 882456 -- ENG Cloud Team
-            or id = 924293 -- Eng Delivery Team
-            or id = 908890 -- Eng Management Team
-            --or id = 241695 -- Eng Mobile Team
-            --or id = 262970 -- Eng QA Team
-            --or id = 327255 -- Eng Web Team
-            --or id = 908401 -- Head
-            --or id = 535066  --"OP - Marketing team"
-            --or id = 911980 --"Senior"
-            --or id = 912045 -- "UI Design"
+            id =754039 -- Team - Apphuset
+            or id = 287358 -- Team - Delivery
+            or id = 284579 -- Team - Design
+            or id = 475492 -- Team - Eng - Backend
+            or id = 882456 -- Team - Eng - Cloud
+            or id = 241695 -- Team - Eng - Mobile
+            or id = 262970 -- Team - Eng - QA
+            or id = 327255 -- Team - Eng - Web
+            or id = 535066  --Team - Marketing
+            or id = 934745 --  Team - Marketing Ext
+            or id = 876423 --Team - Product
             )
-        )) as Team,
+            )
+            */
 
-       (select  CASE
-                    WHEN r.id = 903545 THEN "Seven Peaks"
+        ) as Team,
+
+        (select ur.user_id from sps-business-insight.sps_raw_harvest.user_roles ur where ur.role_id = 903545 and ur.user_id = u.id) as SPS,
+
+        select * from sps-business-insight.sps_raw_harvest.roles
+        select * from sps-business-insight.sps_raw_harvest.user_roles ur where ur.role_id =903545
+
+       (
+            select
+                CASE
                     WHEN r.id = 880331 THEN "Morphosis"
+                    WHEN r.id = 903545 THEN "Seven Peaks"
+
                 END
-                from sps-business-insight.sps_raw_harvest.user_roles ur, sps-business-insight.sps_raw_harvest.roles r where ur.role_id = r.id and user_id=u.id and role_id in (
+            from sps-business-insight.sps_raw_harvest.user_roles ur, sps-business-insight.sps_raw_harvest.roles r where ur.role_id = r.id and user_id=u.id and role_id in (
 
+            -- Show only the roles that soo beng wants
+            select
+               id
+            from
 
-                -- Show only the roles that soo beng wants
-                select
-                   id
-                    from  sps-business-insight.sps_raw_harvest.roles
+                sps-business-insight.sps_raw_harvest.roles
+            where
+            (
+            id =903545 or id = 880331
+            )
 
-                    where
-                    (
-                    id = 880331
-                    or id = 903545
-                    )
-                    and user_id=ur.role_id
         )) as BU
 
 FROM
@@ -95,5 +106,4 @@ group by
     u.id
 
 order by hours
-)
-  LIMIT 500
+

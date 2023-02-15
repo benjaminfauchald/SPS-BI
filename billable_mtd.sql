@@ -30,7 +30,19 @@ END;
 
     call `sps-business-insight.sps_raw_harvest.sp_month_to_date_by_role`(612789)
 
+
+
+
+
 /*
+
+select * from sps-business-insight.sps_raw_harvest.user_roles
+
+
+
+
+
+
 
 BU - Morphosis	1,039	THB 615,324	880331
 BU - Seven Peaks	6,133	THB 5,938,975	903545
