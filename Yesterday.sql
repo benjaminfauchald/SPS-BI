@@ -11,8 +11,8 @@ SELECT
     CONCAT(u.first_name, ' ', u.last_name) as Name,
     u.email as email,
     (select is_contractor from sps-business-insight.sps_raw_harvest.users where id = u.id) as contractor,
-   ( select 'N/A'
-            /*
+   ( --select 'N/A' /*
+
             select
                 CASE
                     WHEN r.id = 754039 THEN "Team - Apphuset"
@@ -24,7 +24,7 @@ SELECT
                     WHEN r.id = 262970 THEN "Team - Eng - QA"
                     WHEN r.id = 327255 THEN "Team - Eng - Web"
                     WHEN r.id = 535066 THEN "Team - Marketing"
-                    WHEN r.id = 934745 THEN "eam - Marketing Ext"
+                    WHEN r.id = 934745 THEN "Team - Marketing Ext"
                     WHEN r.id = 876423 THEN "Team - Product"
                 END
             from sps-business-insight.sps_raw_harvest.user_roles ur, sps-business-insight.sps_raw_harvest.roles r where ur.role_id = r.id and user_id=u.id and role_id in (
@@ -49,14 +49,9 @@ SELECT
             or id = 876423 --Team - Product
             )
             )
-            */
+--*/
 
         ) as Team,
-
-        (select ur.user_id from sps-business-insight.sps_raw_harvest.user_roles ur where ur.role_id = 903545 and ur.user_id = u.id) as SPS,
-
-        select * from sps-business-insight.sps_raw_harvest.roles
-        select * from sps-business-insight.sps_raw_harvest.user_roles ur where ur.role_id =903545
 
        (
             select
