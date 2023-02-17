@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE `sps-business-insight.sps.sp_harvest_duplicate_roles`()
+CREATE OR REPLACE PROCEDURE call `sps-business-insight.sps.sp_harvest_duplicate_roles`()
 BEGIN
     select
         first_name,

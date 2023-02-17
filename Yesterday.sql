@@ -1,6 +1,6 @@
 SELECT
   id,
-    CURRENT_DATE() as spent_date,
+    CAST(DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY) as STRING) as spent_date,
     COALESCE((select sum(hours) from sps-business-insight.sps_raw_harvest.time_entries te
      where
        user_id=u.id
@@ -36,15 +36,15 @@ SELECT
                 sps-business-insight.sps_raw_harvest.roles
             where
             (
-            id =754039 -- Team - Apphuset
-            or id = 287358 -- Team - Delivery
+            --id =754039 -- Team - Apphuset
+            id = 287358 -- Team - Delivery
             or id = 284579 -- Team - Design
             or id = 475492 -- Team - Eng - Backend
             or id = 882456 -- Team - Eng - Cloud
             or id = 241695 -- Team - Eng - Mobile
             or id = 262970 -- Team - Eng - QA
             or id = 327255 -- Team - Eng - Web
-            or id = 535066  --Team - Marketing
+            --or id = 535066  --Team - Marketing
             or id = 934745 --  Team - Marketing Ext
             or id = 876423 --Team - Product
             )
