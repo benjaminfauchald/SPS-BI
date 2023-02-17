@@ -1,4 +1,6 @@
-select 
+select
+      FORMAT_DATE('%b-%d-%Y', cast(close_time as date)) as add_date,
+
   CASE
       WHEN pipeline_id=5 THEN 'SPS'
       WHEN pipeline_id=20 THEN 'N/A'
@@ -25,14 +27,14 @@ select
   formatted_value,
   weighted_value,
   (select name from pipedrive.stages s where s.id=d.stage_id and s.pipeline_id = d.pipeline_id) as stage_name,
+  status,
   active,
+  FORMAT_DATE('%b-%d-%Y', cast(expected_close_date as date)) as expected_close_date,
+  FORMAT_DATE('%b-%d-%Y', cast(won_time as date)) as won_time,
 
   FORMAT_DATE('%b-%d-%Y', cast(close_time as date)) as close_time,
-  FORMAT_DATE('%b-%d-%Y', cast(expected_close_date as date)) as expected_close_date,
-  lost_reason,
-
-
-* from `pipedrive.deals` d
+  lost_reason
+from `pipedrive.deals` d
 
 
 where 
